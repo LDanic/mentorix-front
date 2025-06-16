@@ -1,0 +1,49 @@
+:root {
+ --coleccion-variable-dark-fondo: rgba(44, 44, 44, 1);
+ --color-seleccion: rgba(191, 178, 255, 1);
+ --color-texto: rgba(137, 137, 138, 1);
+ --tipo-botones-font-family: "Inter", Helvetica;
+ --tipo-botones-font-size: 16px;
+ --tipo-botones-font-style: normal;
+ --tipo-botones-font-weight: 500;
+ --tipo-botones-letter-spacing: 0px;
+ --tipo-botones-line-height: normal;
+}
+
+
+.issues-container {
+  background-color: var(--coleccion-variable-dark-fondo);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+  height: 100%;
+}
+
+
+.issues-container .buttons-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row-reverse;
+}
+
+.issues-container .button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #bfb2ff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.issues-container .button .text-button {
+  color: #2c2c2c;
+  font-weight: 500;
+}
