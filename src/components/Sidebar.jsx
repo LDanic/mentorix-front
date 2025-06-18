@@ -1,58 +1,63 @@
+import React from "react";
 import companyLogo from "../assets/CompaniLogo.png";
-import iconChevronLeft from "../assets/Chevron Left.png";
-import line11 from "../assets/Line 11.png";
-import logout from "../assets/logout.png";
+import logoutIcon from "../assets/logout.png";
+import chevronIcon from "../assets/Chevron Left.png";
 import "../styles/Sidebar.css";
 
-function Sidebar() {
+const projects = [
+  "Barkli Gallery",
+  "Greenish",
+  "Bigo Ecommerce",
+  "Youtube Research",
+  "Find Me Teacher",
+];
+
+export default function Sidebar({ onLogout, onNavigateAreas, onSelectProject }) {
   return (
-    <div className="box">
-      <div className="sidebar">
-        <footer className="footer">
-          <img className="logout" alt="Logout" src={logout} />
-
-          <div className="area">
-            <img
-              className="icon-chevron-left"
-              alt="Icon chevron left"
-              src={iconChevronLeft}
-            />
-
-            <div className="text-wrapper">Áreas</div>
-          </div>
-
-          <img className="line" alt="Line" src={line11} />
-        </footer>
-
-        <div className="projects">
-          <div className="div">Projects</div>
-
-          <div className="frame-2">
-            <div className="text-wrapper-2">Barkli Galary</div>
-
-            <div className="text-wrapper-2">Greenish</div>
-
-            <div className="text-wrapper-2">Bigo Ecommerce</div>
-
-            <div className="text-wrapper-2">Youtube Research</div>
-
-            <div className="text-wrapper-2">Find Me Teacher</div>
-          </div>
-
-          <div className="create-new-project">Create New Project</div>
-        </div>
-
-        <div className="company">
-          <img className="company-logo" alt="Company logo" src={companyLogo} />
-
-          <div className="text-wrapper-3">Mentorix</div>
-        </div>
-
-        <img className="img" alt="Line" src={line11} />
+    <aside className="sidebar-container">
+      {/* Logo */}
+      <div className="logo-section">
+        <img src={companyLogo} alt="Company logo" className="logo-img" />
+        <span className="logo-text">Mentorix</span>
       </div>
-    </div>
+
+      {/* Proyectos */}
+      <nav className="projects-nav">
+        <h3 className="projects-title">Projects</h3>
+        <div className="projects-list">
+          {projects.map((name) => (
+            <button
+              key={name}
+              className="project-button"
+              onClick={() => onSelectProject(name)}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+        <button className="create-button" onClick={() => onSelectProject(null)}>
+          + Create New Project
+        </button>
+      </nav>
+
+      {/* Footer: Área y Logout */}
+      <div className="sidebar-footer">
+        <button
+          className="area-button"
+          onClick={onNavigateAreas}
+          aria-label="Áreas"
+        >
+          <img src={chevronIcon} alt="" className="icon-img" />
+          <span>Áreas</span>
+        </button>
+        <button
+          className="logout-button"
+          onClick={onLogout}
+          aria-label="Cerrar sesión"
+        >
+          <img src={logoutIcon} alt="" className="icon-img" />
+        </button>
+      </div>
+    </aside>
   );
-};
-
-
-export default Sidebar;
+}

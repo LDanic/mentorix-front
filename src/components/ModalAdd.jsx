@@ -1,4 +1,4 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 import avatarFemale from "../assets/avatarFemale.png";
 import IconDetails from "../assets/iconDetails.png";
 import search from '../assets/search.png';
@@ -6,7 +6,9 @@ import xIcon from "../assets/x.png";
 import "../styles/ModalAdd.css";
 import Table from "./Table";
 
-export default function ModalAdd({ onClose, onAdd }) {
+export default function ModalAdd({ onAdd }) {
+    const navigate = useNavigate();
+
     const columns = [
         {
             key: "user",
@@ -24,7 +26,7 @@ export default function ModalAdd({ onClose, onAdd }) {
             title: "",
             width: "1fr",
             render: () => (
-                <button className="icon-button details-btn" aria-label="Detalles">
+                <button className="icon-button details-btn" aria-label="Detalles" onClick={() => navigate("/modal-details")}>
                     <img src={IconDetails} alt="" />
                 </button>
             ),
@@ -34,6 +36,7 @@ export default function ModalAdd({ onClose, onAdd }) {
     const data = [
         { user: { name: "Natali Craig", avatar: avatarFemale } },
         { user: { name: "Kate Morrison", avatar: avatarFemale } },
+        
     ];
 
     return (
@@ -41,7 +44,7 @@ export default function ModalAdd({ onClose, onAdd }) {
             <div className="modal">
                 <header className="modal-header">
                     <h2 className="modal-title">Añadir participante</h2>
-                    <button className="icon-button" onClick={onClose} aria-label="Cerrar">
+                    <button className="icon-button" onClick={() => navigate("/participantes")} aria-label="Cerrar">
                         <img src={xIcon} alt="" />
                     </button>
                 </header>

@@ -44,7 +44,7 @@
 
 .table-container span {
   padding-left: 19px;
-  top: -10px;
+  top: auto;
   position: relative;
 }
 
