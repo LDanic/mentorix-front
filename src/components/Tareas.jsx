@@ -3,6 +3,7 @@ import avatarMale from '../assets/avatarMale.png';
 import avatarFemale from '../assets/avatarFemale.png';
 import calendarIcon from "../assets/calendarIcon.png";
 import Table from "./Table";
+import EstadoBadgeFactory from "../utils/EstadoBadgeFlyweight.jsx";
 import "../styles/Tareas.css";
 
 function Tareas() {
@@ -34,10 +35,7 @@ function Tareas() {
             key: "estado",
             title: "Estado",
             width: "140px",
-            render: (text) => {
-                const cls = text.toLowerCase().replace(/\s+/g, "-");
-                return <span className={`badge ${cls}`}>{text}</span>;
-            },
+            render: (text) => EstadoBadgeFactory.getBadge(text).render(),
         },
     ];
 

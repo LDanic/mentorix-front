@@ -75,19 +75,3 @@
   text-align: center;
   min-width: 80px;
 }
-
-/* ESTADOS */
-.badge.completado {
-  background-color: #D4F8E8;
-  color: #2A9D8F;
-}
-
-.badge.en-progreso {
-  background-color: #FFDCE0;
-  color: #D64550;
-}
-
-.badge.pendiente {
-  background-color: #E4EBFB;
-  color: #1E3A8A;
-}
