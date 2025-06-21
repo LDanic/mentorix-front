@@ -65,15 +65,15 @@ export default function ModalAddTI({ tipo = "tarea", onClose, onSave }) {
 
   return (
     <div
-      className="modal-backdrop"
+      className="ti-modal-backdrop"
       onClick={handleBackdropClick}
       onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
-      <div className="modal">
-        <div className="modal-header">
-          <h2 className="modal-title">Agregar Nueva {capitalTipo}</h2>
-          <button className="icon-button" onClick={handleCancel} aria-label="Cerrar modal">
+      <div className="ti-modal">
+        <div className="ti-modal-header">
+          <h2 className="ti-modal-title">Agregar Nueva {capitalTipo}</h2>
+          <button className="ti-icon-button" onClick={handleCancel} aria-label="Cerrar modal">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -82,9 +82,9 @@ export default function ModalAddTI({ tipo = "tarea", onClose, onSave }) {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="modal-body">
-            <div className="form-field">
-              <label htmlFor="nombre" className="field-label">
+          <div className="ti-modal-body">
+            <div className="ti-form-field">
+              <label htmlFor="nombre" className="ti-field-label">
                 Nombre de la {capitalTipo}
               </label>
               <input
@@ -93,18 +93,18 @@ export default function ModalAddTI({ tipo = "tarea", onClose, onSave }) {
                 placeholder={`Ingresa el nombre de la ${tipo}`}
                 value={formData.nombre}
                 onChange={(e) => handleInputChange("nombre", e.target.value)}
-                className="form-input"
+                className="ti-form-input"
                 required
               />
             </div>
 
-            <div className="form-field">
-              <label htmlFor="responsable" className="field-label">Responsable</label>
+            <div className="ti-form-field">
+              <label htmlFor="responsable" className="ti-field-label">Responsable</label>
               <select
                 id="responsable"
                 value={formData.responsable}
                 onChange={(e) => handleInputChange("responsable", e.target.value)}
-                className="form-select"
+                className="ti-form-select"
                 required
               >
                 <option value="">Selecciona un responsable</option>
@@ -115,26 +115,26 @@ export default function ModalAddTI({ tipo = "tarea", onClose, onSave }) {
             </div>
 
             {tipo === "tarea" && (
-              <div className="form-field">
-                <label htmlFor="fecha" className="field-label">Fecha de Vencimiento</label>
+              <div className="ti-form-field">
+                <label htmlFor="fecha" className="ti-field-label">Fecha de Vencimiento</label>
                 <input
                   id="fecha"
                   type="date"
                   value={formData.fechaVencimiento}
                   onChange={(e) => handleInputChange("fechaVencimiento", e.target.value)}
-                  className="form-input"
+                  className="ti-form-input"
                   required
                 />
               </div>
             )}
 
-            <div className="form-field">
-              <label htmlFor="status" className="field-label">Estado</label>
+            <div className="ti-form-field">
+              <label htmlFor="status" className="ti-field-label">Estado</label>
               <select
                 id="status"
                 value={formData.status}
                 onChange={(e) => handleInputChange("status", e.target.value)}
-                className="form-select"
+                className="ti-form-select"
                 required
               >
                 <option value="">Selecciona el estado</option>
@@ -145,12 +145,12 @@ export default function ModalAddTI({ tipo = "tarea", onClose, onSave }) {
             </div>
           </div>
 
-          <div className="modal-footer">
+          <div className="ti-modal-footer">
             <div className="footer-buttons">
-              <button type="button" className="cancel-button" onClick={handleCancel}>
+              <button type="button" className="ti-cancel-button" onClick={handleCancel}>
                 Cancelar
               </button>
-              <button type="submit" className="primary-btn">
+              <button type="submit" className="ti-primary-btn">
                 Crear {capitalTipo}
               </button>
             </div>

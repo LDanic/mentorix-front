@@ -1,11 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import xIcon from "../assets/x.png";
 import "../styles/ModalDetails.css";
 
-export default function ModalDetails({person}) {
-    const navigate = useNavigate();
-    //const { name, skills = [], description = "" } = person;
-    const name = "pepe";
+export default function ModalDetails({onClose, person}) {
+
+    const name = person.name || person.user.name;
     const skills = ["python", "plotly"];
     const description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat";
     return (
@@ -13,7 +11,7 @@ export default function ModalDetails({person}) {
             <div className="modal-details">
                 <header className="modal-header">
                     <h2 className="modal-title">Detalles persona</h2>
-                    <button className="icon-button" onClick={() => navigate("/participantes")} aria-label="Cerrar">
+                    <button className="icon-button"onClick={onClose} aria-label="Cerrar">
                         <img src={xIcon} alt="" />
                     </button>
                 </header>

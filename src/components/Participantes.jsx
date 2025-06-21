@@ -1,14 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import addIcon from '../assets/addIcon.png';
 import filter from '../assets/filter.png';
 import search from '../assets/search.png';
 import avatarMale from '../assets/avatarMale.png';
 import avatarFemale from '../assets/avatarFemale.png';
+import ModalAdd from "./ModalAdd.jsx";
+import ModalDetails from "./ModalDetails.jsx";
 import "../styles/Participantes.css";
 import Table from "./Table";
 
 function Participantes() {
-    const navigate = useNavigate();
+    const [isAddOpen, setIsAddOpen] = useState(false);
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+    const [selectedPerson, setSelectedPerson] = useState(null);
 
     const columns = [
         { key: "id", title: "ID", width: "120px" },
@@ -20,7 +24,10 @@ function Participantes() {
                 <div
                     className="user-cell"
                     style={{ cursor: "pointer" }}
-                    onClick={() => navigate("/modal-details", { state: { person: row } })}
+                    onClick={() => {
+                        setSelectedPerson(row);
+                        setIsDetailsOpen(true);
+                    }}
                 >
                     <img src={value.avatar} className="avatar" alt="" />
                     <span>{value.name}</span>
@@ -35,6 +42,22 @@ function Participantes() {
         { id: "#CM9802", user: { name: "Kate Morrison", avatar: avatarFemale }, rol: "Editor" },
         { id: "#CM9802", user: { name: "Orlando Diggs", avatar: avatarMale }, rol: "Colaborador" },
     ];
+
+    const handleSave = (person) => {
+        console.log("participante añadido:", person);
+    };
+
+    const handleShowAdd = () => setIsAddOpen(true);
+    const handleCloseAdd = () => setIsAddOpen(false);
+
+    const handleShowDetails = (person) => {
+        setSelectedPerson(person);
+        setIsDetailsOpen(true);
+    };
+    const handleCloseDetails = () => {
+        setIsDetailsOpen(false);
+        setSelectedPerson(null);
+    };
     return (
         <div className="participants-container">
 
@@ -87,12 +110,33 @@ function Participantes() {
                 <button
                     type="button"
                     className="button"
-                    onClick={() => navigate("/modal-add")}
+                    onClick={handleShowAdd}
                 >
                     <img src={addIcon} className="icon" alt="Añadir" />
                     <div className="text-button">Añadir Participante</div>
                 </button>
             </div>
+
+            {isAddOpen && (
+                <ModalAdd
+                    onClose={handleCloseAdd}
+                    onSave={person => {
+                        handleSave(person);
+                        handleCloseAdd();
+                    }}
+                    onShowDetails={(person) => {
+                        handleCloseAdd();
+                        handleShowDetails(person);
+                    }}
+                />
+            )}
+
+            {isDetailsOpen && (
+                <ModalDetails
+                    person={selectedPerson}
+                    onClose={handleCloseDetails}
+                />
+            )}
 
         </div>
     );

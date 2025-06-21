@@ -6,8 +6,6 @@ import Participantes from "./components/Participantes.jsx";
 import Tareas from "./components/Tareas.jsx";
 import Issues from "./components/Issues.jsx";
 import Description from "./components/Description.jsx";
-import ModalAdd from "./components/ModalAdd.jsx";
-import ModalDetails from "./components/ModalDetails.jsx";
 import "./App.css";
 
 function App() {
@@ -23,8 +21,6 @@ function App() {
               <Route path="/participantes" element={<Participantes />} />
               <Route path="/tareas" element={<Tareas />} />
               <Route path="/issues" element={<Issues />} />
-              <Route path="/modal-add" element={<ModalAdd />} />
-              <Route path="/modal-details" element={<ModalDetails />} />
             </Routes>
           </div>
         </div>
