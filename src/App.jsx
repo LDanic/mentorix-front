@@ -1,30 +1,28 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignupPage from "./components/SignupPage.jsx";
-import Header from "./components/Header.jsx";
-import Sidebar from "./components/Sidebar.jsx";
-import Participantes from "./components/Participantes.jsx";
-import Tareas from "./components/Tareas.jsx";
-import Issues from "./components/Issues.jsx";
-import Description from "./components/Description.jsx";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
+import Description from "./components/Description";
+import Participantes from "./components/Participantes";
+import Tareas from "./components/Tareas";
+import Issues from "./components/Issues";
+import SignupPage from "./components/SignupPage";
 import "./App.css";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="app-container">
-        <Sidebar />
-        <div className="main-area">
-          <Header />
-          <div className="content">
-            <Routes>
-              <Route path="/" element={<Description />} />
-              <Route path="/participantes" element={<Participantes />} />
-              <Route path="/tareas" element={<Tareas />} />
-              <Route path="/issues" element={<Issues />} />
-            </Routes>
-          </div>
-        </div>
-      </div>
+      <Routes>
+        <Route path="/signup" element={<SignupPage />} />
+
+        <Route path="/projects/:projectId/*" element={<Dashboard />}>
+          <Route index element={<Description />} />
+          <Route path="participantes" element={<Participantes />} />
+          <Route path="issues" element={<Issues />} />
+          <Route path="tareas" element={<Tareas />} />
+          <Route path="*" element={<Navigate to="" replace />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/signup" replace />} />
+      </Routes>
     </BrowserRouter>
   );
 }
