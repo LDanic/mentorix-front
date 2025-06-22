@@ -1,0 +1,71 @@
+/* Fondo con overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+/* Contenedor del selector */
+.recovery-container {
+  width: 100%;
+  max-width: 480px;
+  background-color: #fff;
+  padding: 32px;
+  border-radius: 12px;
+  font-family: "Inter", -apple-system, Roboto, Helvetica, sans-serif;
+  box-shadow:
+    0 10px 15px rgba(0, 0, 0, 0.1),
+    0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Título del selector */
+.recovery-container h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* Botones de selección */
+.recovery-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.recovery-buttons button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  background-color: #e5e7eb;
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.recovery-buttons button:hover {
+  background-color: #d1d5db;
+}
+
+.recovery-buttons .active {
+  background-color: #667eea;
+  color: #fff;
+}
+
+/* Donde se carga el componente dinámico */
+.recovery-content {
+  margin-top: 16px;
+}
