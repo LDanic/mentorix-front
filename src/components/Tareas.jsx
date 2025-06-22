@@ -1,15 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import addIcon from '../assets/addIcon.png';
-import avatarMale from '../assets/avatarMale.png';
 import avatarFemale from '../assets/avatarFemale.png';
 import calendarIcon from "../assets/calendarIcon.png";
 import Table from "./Table";
 import ModalAddTI from "./ModalAddTI";
 import EstadoBadgeFactory from "../utils/EstadoBadgeFlyweight.jsx";
+import { getProjectTasks } from "../utils/projects";
 import "../styles/Tareas.css";
 
 export default function Tareas() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { projectId } = useParams();
+  const [task, setTask] = useState(null);
+  const [error, setError] = useState(null);
+
+
+  useEffect(() => {
+    if (!projectId) return;
+    getProjectTasks(projectId)
+      .then((raw) => {
+        const tableData = raw.map((p) => ({
+          nombre: p.name,
+          responsable: {
+            name: p.assigned_to,
+            avatar: avatarFemale
+          },
+          vencimiento: p.deadline,
+          estado: p.status,
+        }));
+        setTask(tableData);
+      })
+      .catch(() => setError("No se pudo los issues del proyecto"));
+  }, [projectId]);
+
+  if (error) return <div className="description-container">{error}</div>;
+  if (!task) return <div className="description-container">Cargando...</div>;
 
   const columns = [
     { key: "nombre", title: "Nombre", width: "1fr" },
@@ -43,35 +70,14 @@ export default function Tareas() {
     },
   ];
 
-  const data = [
-    {
-      nombre: "Definir alcance",
-      responsable: { name: "Ana Pérez", avatar: avatarFemale },
-      vencimiento: "20 Jun 2025",
-      estado: "Pendiente",
-    },
-    {
-      nombre: "Revisar diseño",
-      responsable: { name: "Luis Gómez", avatar: avatarMale },
-      vencimiento: "18 Jun 2025",
-      estado: "Completado",
-    },
-    {
-      nombre: "Revisar cosa x",
-      responsable: { name: "Luis Gómez", avatar: avatarMale },
-      vencimiento: "30 Jun 2025",
-      estado: "En progreso",
-    },
-  ];
 
-  
   const handleSave = (newTask) => {
     console.log("Tarea creada:", newTask);
   };
 
   return (
     <div className="tareas-container">
-      <Table columns={columns} data={data} />
+      <Table columns={columns} data={task} />
 
       <div className="buttons-wrapper">
         <button

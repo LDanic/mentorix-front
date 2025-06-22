@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import addIcon from '../assets/addIcon.png';
-import avatarMale from '../assets/avatarMale.png';
 import avatarFemale from '../assets/avatarFemale.png';
 import Table from "./Table";
 import EstadoBadgeFactory from "../utils/EstadoBadgeFlyweight.jsx";
