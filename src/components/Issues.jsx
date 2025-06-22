@@ -57,10 +57,6 @@ function Issues() {
         },
     ];
 
-    const handleSave = (newIssue) => {
-        console.log("Tarea creada:", newIssue);
-    };
-
     return (
         <div className="issues-container">
 
@@ -77,10 +73,7 @@ function Issues() {
                 <ModalAddTI
                     tipo="Issue"
                     onClose={() => setIsModalOpen(false)}
-                    onSave={(issue) => {
-                        handleSave(issue);
-                        setIsModalOpen(false);
-                    }}
+                    projectId={projectId}
                 />
             )}
 

@@ -1,23 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useParams } from "react-router-dom";
 import { getProjectUsers } from "../utils/users";
 import addIcon from '../assets/addIcon.png';
-import filter from '../assets/filter.png';
+import filterIcon from '../assets/filter.png';
 import search from '../assets/search.png';
 import avatarFemale from '../assets/avatarFemale.png';
 import ModalAdd from "./ModalAdd.jsx";
 import ModalDetails from "./ModalDetails.jsx";
 import "../styles/Participantes.css";
 import Table from "./Table";
+import { NameFilterStrategy, RoleFilterStrategy, FilterContext } from "../utils/filterStrategy.js";
 
 function Participantes() {
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [selectedPerson, setSelectedPerson] = useState(null);
-    
+
     const { projectId } = useParams();
     const [participants, setParticipants] = useState(null);
     const [error, setError] = useState(null);
+
+
+    const [filtered, setFiltered] = useState([]);
+    const [term, setTerm] = useState('');
+    const [filterType, setFilterType] = useState('name');
+
+    const filterContext = useRef(new FilterContext(new NameFilterStrategy()));
 
 
     useEffect(() => {
@@ -33,6 +42,7 @@ function Participantes() {
                     rol: p.role,
                 }));
                 setParticipants(tableData);
+                setFiltered(tableData);
             })
             .catch(() => setError("No se pudo cargar los participantes del proyecto"));
     }, [projectId]);
@@ -63,6 +73,17 @@ function Participantes() {
         { key: "rol", title: "Rol", width: "1fr" },
     ];
 
+
+    const handleSearch = () => {
+        if (filterType === 'name') {
+            filterContext.current.setStrategy(new NameFilterStrategy());
+        } else {
+            filterContext.current.setStrategy(new RoleFilterStrategy());
+        }
+        const results = filterContext.current.executeFilter(participants, term);
+        setFiltered(results);
+    };
+
     const handleSave = (person) => {
         console.log("participante añadido:", person);
     };
@@ -84,39 +105,46 @@ function Participantes() {
             <div className="search-wrapper">
                 <div className="search">
                     {/* Botón de filtro */}
-                    <button
-                        type="button"
-                        className="icon-button filter-button"
-                        onClick={() => {
-                            alert("boton filtro");
-                        }}
-                        aria-label="Filtrar"
-                    >
-                        <img src={filter} className="icon" alt="" />
-                    </button>
+                    <DropdownMenu.Root>
+                        <DropdownMenu.Trigger asChild>
+                            <button className="filter-trigger">
+                                <img src={filterIcon} className="filter-icon" alt="Filtrar" />
+                            </button>
+                        </DropdownMenu.Trigger>
+
+                        <DropdownMenu.Portal>
+                            <DropdownMenu.Content className="dropdown-content" sideOffset={5}>
+                                <DropdownMenu.Item
+                                    className="dropdown-item"
+                                    onSelect={() => setFilterType("name")}
+                                >
+                                    Filtrar por Nombre
+                                </DropdownMenu.Item>
+                                <DropdownMenu.Item
+                                    className="dropdown-item"
+                                    onSelect={() => setFilterType("role")}
+                                >
+                                    Filtrar por Rol
+                                </DropdownMenu.Item>
+                            </DropdownMenu.Content>
+                        </DropdownMenu.Portal>
+                    </DropdownMenu.Root>
 
                     {/* Input de búsqueda */}
                     <input
                         type="text"
                         className="search-input"
-                        placeholder="Buscar participante..."
-                        onChange={e => {
-                            // tu lógica de guardar término de búsqueda
-                        }}
-                        onKeyDown={e => {
-                            if (e.key === "Enter") {
-                                // tu lógica de buscar al presionar Enter
-                            }
-                        }}
+                        placeholder={filterType === 'name' ? 'Nombre...' : 'Rol...'}
+                        value={term}
+                        onChange={e => setTerm(e.target.value)}
+                        onKeyDown={e => e.key === 'Enter' && handleSearch()}
                     />
 
                     {/* Botón de búsqueda */}
                     <button
                         type="button"
                         className="icon-button search-button"
-                        onClick={() => {
-                            alert("boton buscar ");
-                        }}
+                        onClick={handleSearch}
                         aria-label="Buscar"
                     >
                         <img src={search} className="icon" alt="" />
@@ -124,7 +152,7 @@ function Participantes() {
                 </div>
             </div>
 
-            <Table columns={columns} data={participants} />
+            <Table columns={columns} data={filtered} />
 
             <div className="buttons-wrapper">
                 <button

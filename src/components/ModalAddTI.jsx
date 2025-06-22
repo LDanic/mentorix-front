@@ -1,8 +1,11 @@
-// src/components/ModalAddTI.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getProjectUsers } from "../utils/users";
 import "../styles/ModalAddTI.css";
 
-export default function ModalAddTI({ tipo = "tarea", onClose, onSave }) {
+export default function ModalAddTI({ tipo = "tarea", onClose, projectId }) {
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState(null);
+
   const [formData, setFormData] = useState({
     nombre: "",
     responsable: "",
@@ -10,21 +13,30 @@ export default function ModalAddTI({ tipo = "tarea", onClose, onSave }) {
     status: "",
   });
 
-  const responsables = [
-    { value: "juan-perez", label: "Juan Pérez" },
-    { value: "maria-garcia", label: "María García" },
-    { value: "carlos-rodriguez", label: "Carlos Rodríguez" },
-    { value: "ana-martinez", label: "Ana Martínez" },
-    { value: "luis-gonzalez", label: "Luis González" },
-  ];
-
   const statusOptions = [
-    { value: "pendiente", label: "Pendiente", color: "#eab308" },
-    { value: "en-progreso", label: "En Progreso", color: "#3b82f6" },
-    { value: "completada", label: "Completada", color: "#10b981" },
-    { value: "cancelada", label: "Cancelada", color: "#ef4444" },
+    { value: "p", label: "Pendiente" },
+    { value: "i", label: "En Progreso"},
+    { value: "c", label: "Completada"},
   ];
 
+  useEffect(() => {
+    if (!projectId) return;
+    getProjectUsers(projectId)
+      .then((raw) => {
+        const userOptions = raw.map((user) => ({
+          value: user.user_id,
+          label: user.user.name,
+        }));
+        setUsers(userOptions);
+      })
+      .catch(() => setError("No se pudieron cargar los usuarios del proyecto"));
+
+  }, [projectId]);
+
+  if (error) return <div className="description-container">{error}</div>;
+  if (!users) return <div className="description-container">Cargando...</div>;
+
+  
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -44,7 +56,6 @@ export default function ModalAddTI({ tipo = "tarea", onClose, onSave }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(`Nueva ${tipo}:`, formData);
-    if (onSave) onSave(formData);
     handleCancel();
   };
 
@@ -108,7 +119,7 @@ export default function ModalAddTI({ tipo = "tarea", onClose, onSave }) {
                 required
               >
                 <option value="">Selecciona un responsable</option>
-                {responsables.map((r) => (
+                {users.map((r) => (
                   <option key={r.value} value={r.value}>{r.label}</option>
                 ))}
               </select>
@@ -147,9 +158,6 @@ export default function ModalAddTI({ tipo = "tarea", onClose, onSave }) {
 
           <div className="ti-modal-footer">
             <div className="footer-buttons">
-              <button type="button" className="ti-cancel-button" onClick={handleCancel}>
-                Cancelar
-              </button>
               <button type="submit" className="ti-primary-btn">
                 Crear {capitalTipo}
               </button>

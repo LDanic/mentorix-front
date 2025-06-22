@@ -94,10 +94,7 @@ export default function Tareas() {
         <ModalAddTI
           tipo="tarea"
           onClose={() => setIsModalOpen(false)}
-          onSave={(task) => {
-            handleSave(task);
-            setIsModalOpen(false);
-          }}
+          projectId={projectId}
         />
       )}
     </div>
