@@ -1,18 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getProjectUsers } from "../utils/users";
 import addIcon from '../assets/addIcon.png';
 import filter from '../assets/filter.png';
 import search from '../assets/search.png';
-import avatarMale from '../assets/avatarMale.png';
 import avatarFemale from '../assets/avatarFemale.png';
 import ModalAdd from "./ModalAdd.jsx";
 import ModalDetails from "./ModalDetails.jsx";
 import "../styles/Participantes.css";
 import Table from "./Table";
+import { getUserById } from "../utils/users";
 
 function Participantes() {
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [selectedPerson, setSelectedPerson] = useState(null);
+    
+    const { projectId } = useParams();
+    const [participants, setParticipants] = useState(null);
+    const [error, setError] = useState(null);
+
+
+    useEffect(() => {
+        if (!projectId) return;
+        getProjectUsers(projectId)
+            .then((raw) => {
+                const tableData = raw.map((p) => ({
+                    id: p.user_id,
+                    user: {
+                        name: p.user.name,
+                        avatar: avatarFemale,
+                    },
+                    rol: p.role,
+                }));
+                setParticipants(tableData);
+            })
+            .catch(() => setError("No se pudo cargar los participantes del proyecto"));
+    }, [projectId]);
+
+    if (error) return <div className="description-container">{error}</div>;
+    if (!participants) return <div className="description-container">Cargando...</div>;
 
     const columns = [
         { key: "id", title: "ID", width: "120px" },
@@ -35,12 +62,6 @@ function Participantes() {
             ),
         },
         { key: "rol", title: "Rol", width: "1fr" },
-    ];
-
-    const data = [
-        { id: "#CM9802", user: { name: "Natali Craig", avatar: avatarFemale }, rol: "Creador" },
-        { id: "#CM9802", user: { name: "Kate Morrison", avatar: avatarFemale }, rol: "Editor" },
-        { id: "#CM9802", user: { name: "Orlando Diggs", avatar: avatarMale }, rol: "Colaborador" },
     ];
 
     const handleSave = (person) => {
@@ -104,7 +125,7 @@ function Participantes() {
                 </div>
             </div>
 
-            <Table columns={columns} data={data} />
+            <Table columns={columns} data={participants} />
 
             <div className="buttons-wrapper">
                 <button

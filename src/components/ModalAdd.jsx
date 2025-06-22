@@ -3,7 +3,6 @@ import avatarFemale from "../assets/avatarFemale.png";
 import IconDetails from "../assets/iconDetails.png";
 import xIcon from "../assets/x.png";
 import "../styles/ModalAdd.css";
-import ModalDetails from "./ModalDetails.jsx";
 import Table from "./Table";
 
 export default function ModalAdd({ onSave, onClose, onShowDetails }) {
@@ -17,6 +16,7 @@ export default function ModalAdd({ onSave, onClose, onShowDetails }) {
             render: (value) => (
                 <div className="user-cell">
                     <img src={value.avatar} className="avatar" alt="" />
+                    <span className='hidden'>{value.id}</span>
                     <span>{value.name}</span>
                 </div>
             ),
@@ -42,8 +42,8 @@ export default function ModalAdd({ onSave, onClose, onShowDetails }) {
     ];
 
     const data = [
-        { user: { name: "Natali Craig", avatar: avatarFemale } },
-        { user: { name: "Kate Morrison", avatar: avatarFemale } },
+        { user: {id: 1,  name: "Natali Craig", avatar: avatarFemale } },
+        { user: {id: 2,  name: "Kate Morrison", avatar: avatarFemale } },
 
     ];
 

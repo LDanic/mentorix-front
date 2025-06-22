@@ -1,45 +1,66 @@
 import xIcon from "../assets/x.png";
 import "../styles/ModalDetails.css";
+import { useEffect, useState } from "react";
+import { getUserById } from "../utils/users";
 
-export default function ModalDetails({onClose, person}) {
+export default function ModalDetails({ onClose, person }) {
+  const [userData, setUserData] = useState(null);
 
-    const name = person.name || person.user.name;
-    const skills = ["python", "plotly"];
-    const description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat";
-    return (
-        <div className="modal-backdrop">
-            <div className="modal-details">
-                <header className="modal-header">
-                    <h2 className="modal-title">Detalles persona</h2>
-                    <button className="icon-button"onClick={onClose} aria-label="Cerrar">
-                        <img src={xIcon} alt="" />
-                    </button>
-                </header>
+  useEffect(() => {
+    if (person && person.id) {
+      getUserById(person.id).then((data) => {
+        setUserData(data);
+      });
+    }
+  }, [person]);
 
-                <div className="details-body">
-                    <h3 className="person-name">{name}</h3>
+  if (!userData) {
+    return <div className="modal-backdrop">Cargando...</div>;
+  }
 
-                    <div className="skills-section">
-                        <span className="skills-label">💪 Habilidades</span>
-                        <div className="skills-list">
-                            {skills.map((skill) => (
-                                <span key={skill} className="skill-badge">
-                                    {skill}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
+  return (
+    <div className="modal-backdrop">
+      <div className="modal-details">
+        <header className="modal-header">
+          <h2 className="modal-title">Detalles persona</h2>
+          <button className="icon-button" onClick={onClose} aria-label="Cerrar">
+            <img src={xIcon} alt="" />
+          </button>
+        </header>
 
-                    <p className="person-description">{description}</p>
-                </div>
+        <div className="details-body">
+          <h3 className="person-name">{userData.name || "Sin nombre"}</h3>
 
-                <footer className="details-footer">
-                    <button type="button" className="download-btn">
-
-                        Descargar Hoja De Vida
-                    </button>
-                </footer>
+          <div className="skills-section">
+            <span className="skills-label">💪 Habilidades</span>
+            <div className="skills-list">
+              {userData.skills && userData.skills.length > 0 ? (
+                userData.skills.map((skill) => (
+                  <span key={skill} className="skill-badge">
+                    {skill}
+                  </span>
+                ))
+              ) : (
+                <span>No tiene habilidades asignadas.</span>
+              )}
             </div>
+          </div>
+
+          <p className="person-description">
+            {userData.description || "Sin descripción disponible"}
+          </p>
         </div>
-    );
+
+        <footer className="details-footer">
+          <button
+            type="button"
+            className="download-btn"
+            onClick={() => console.log(userData)}
+          >
+            Descargar Hoja De Vida
+          </button>
+        </footer>
+      </div>
+    </div>
+  );
 }

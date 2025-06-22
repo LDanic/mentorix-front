@@ -11,3 +11,12 @@ export async function getProjectById(id) {
   if (!res.ok) throw new Error(`Error ${res.status}`);
   return res.json();
 }
+
+export async function getProjectIssues(id) { 
+  const res = await fetch(`${API_BASE}/projects/issues/`);
+  if (!res.ok) throw new Error(`Error ${res.status}`);
+  const data = await res.json();
+  
+  const filtered = data.filter(issue => issue.project_id === id);
+  return filtered;
+}
