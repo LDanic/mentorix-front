@@ -1,3 +1,5 @@
+import { data } from "react-router-dom";
+
 const API_BASE = "http://127.0.0.1:8000/mentorix/api";
 
 export async function getProjects() {
@@ -13,10 +15,11 @@ export async function getProjectById(id) {
 }
 
 export async function getProjectIssues(id) { 
-  const res = await fetch(`${API_BASE}/projects/issues/`);
+  const res = await fetch(`${API_BASE}/issues/`);
   if (!res.ok) throw new Error(`Error ${res.status}`);
-  const data = await res.json();
   
-  const filtered = data.filter(issue => issue.project_id === id);
+  const data = await res.json(); 
+
+  const filtered = data.filter(issue => issue.project_id === Number(id));
   return filtered;
 }

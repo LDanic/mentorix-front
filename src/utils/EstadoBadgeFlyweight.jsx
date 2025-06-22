@@ -24,31 +24,35 @@ class EstadoBadgeFactory {
   static getBadge(nombre) {
     const key = nombre.toLowerCase();
     if (!this.badges.has(key)) {
-      let claseCss, bg, color;
+      let claseCss, bg, color, text;
 
       switch (key) {
-        case "completado":
+        case "c":
+          text = "Completado";
           claseCss = "completado";
           bg = "#D4F8E8";
           color = "#2A9D8F";
           break;
-        case "en progreso":
+        case "i":
+          text = "En progreso";
           claseCss = "en-progreso";
           bg = "#FFDCE0";
           color = "#D64550";
           break;
-        case "pendiente":
+        case "p":
+          text = "Pendiente";
           claseCss = "pendiente";
           bg = "#E4EBFB";
           color = "#1E3A8A";
           break;
         default:
-          claseCss = "pendiente";
+          text = "Pendiente";
+          claseCss = "p";
           bg = "#f0f0f0";
           color = "#333";
       }
 
-      this.badges.set(key, new EstadoBadge(nombre, claseCss, bg, color));
+      this.badges.set(key, new EstadoBadge(text, claseCss, bg, color));
     }
 
     return this.badges.get(key);

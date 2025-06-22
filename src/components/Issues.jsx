@@ -1,14 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import addIcon from '../assets/addIcon.png';
 import avatarMale from '../assets/avatarMale.png';
 import avatarFemale from '../assets/avatarFemale.png';
 import Table from "./Table";
 import EstadoBadgeFactory from "../utils/EstadoBadgeFlyweight.jsx";
 import ModalAddTI from "./ModalAddTI";
+import { getProjectIssues } from "../utils/projects";
 import "../styles/Issues.css";
 
 function Issues() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const { projectId } = useParams();
+    const [issues, setIssues] = useState(null);
+    const [error, setError] = useState(null);
+
+
+    useEffect(() => {
+        if (!projectId) return;
+        getProjectIssues(projectId)
+            .then((raw) => {
+                const tableData = raw.map((p) => ({
+                    nombre: p.name,
+                    responsable: {
+                        name: p.assigned_to,
+                        avatar: avatarFemale},
+                    estado: p.status,
+                }));
+                setIssues(tableData);
+            })
+            .catch(() => setError("No se pudo los issues del proyecto"));
+    }, [projectId]);
+
+    if (error) return <div className="description-container">{error}</div>;
+    if (!issues) return <div className="description-container">Cargando...</div>;
+
+
     const columns = [
         { key: "nombre", title: "Nombre", width: "1fr" },
         {
@@ -17,7 +45,7 @@ function Issues() {
             width: "1fr",
             render: (value) => (
                 <div className="responsable-cell">
-                    <img src={value.avatar} className="avatar" alt="" />
+                    <img src={avatarFemale} className="avatar" alt="" />
                     <span>{value.name}</span>
                 </div>
             ),
@@ -30,24 +58,6 @@ function Issues() {
         },
     ];
 
-    const data = [
-        {
-            nombre: "Definir alcance",
-            responsable: { name: "Ana Pérez", avatar: avatarFemale },
-            estado: "Pendiente",
-        },
-        {
-            nombre: "Revisar diseño",
-            responsable: { name: "Luis Gómez", avatar: avatarMale },
-            estado: "Completado",
-        },
-        {
-            nombre: "Revisar cosa x",
-            responsable: { name: "Luis Gómez", avatar: avatarMale },
-            estado: "En progreso",
-        },
-    ];
-
     const handleSave = (newIssue) => {
         console.log("Tarea creada:", newIssue);
     };
@@ -55,7 +65,7 @@ function Issues() {
     return (
         <div className="issues-container">
 
-            <Table columns={columns} data={data} />;
+            <Table columns={columns} data={issues} />;
 
             <div className="buttons-wrapper">
                 <button type="button" className="button" onClick={() => setIsModalOpen(true)}>

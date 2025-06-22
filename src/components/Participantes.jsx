@@ -9,7 +9,6 @@ import ModalAdd from "./ModalAdd.jsx";
 import ModalDetails from "./ModalDetails.jsx";
 import "../styles/Participantes.css";
 import Table from "./Table";
-import { getUserById } from "../utils/users";
 
 function Participantes() {
     const [isAddOpen, setIsAddOpen] = useState(false);
