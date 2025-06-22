@@ -33,6 +33,7 @@ class EstadoBadgeFactory {
           bg = "#D4F8E8";
           color = "#2A9D8F";
           break;
+        case "e":
         case "i":
           text = "En progreso";
           claseCss = "en-progreso";
@@ -46,8 +47,8 @@ class EstadoBadgeFactory {
           color = "#1E3A8A";
           break;
         default:
-          text = "Pendiente";
-          claseCss = "p";
+          text = "No definido";
+          claseCss = "pendiente";
           bg = "#f0f0f0";
           color = "#333";
       }

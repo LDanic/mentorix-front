@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { getProjectUsers } from "../utils/users";
+import { createSaveProcess } from "../utils/SaveTemplateMethod";
 import "../styles/ModalAddTI.css";
 
-export default function ModalAddTI({ tipo = "tarea", onClose, projectId }) {
+export default function ModalAddTI({ tipo = "tarea", onClose, projectId, onSave }) {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
 
@@ -14,9 +15,9 @@ export default function ModalAddTI({ tipo = "tarea", onClose, projectId }) {
   });
 
   const statusOptions = [
-    { value: "p", label: "Pendiente" },
-    { value: "i", label: "En Progreso"},
-    { value: "c", label: "Completada"},
+    { value: "P", label: "Pendiente" },
+    { value: "E", label: "En Progreso" },
+    { value: "C", label: "Completada" },
   ];
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function ModalAddTI({ tipo = "tarea", onClose, projectId }) {
   if (error) return <div className="description-container">{error}</div>;
   if (!users) return <div className="description-container">Cargando...</div>;
 
-  
+
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -53,10 +54,21 @@ export default function ModalAddTI({ tipo = "tarea", onClose, projectId }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Nueva ${tipo}:`, formData);
-    handleCancel();
+    console.log("Datos del formulario:", formData);
+    try {
+
+      // 1) Creamos el proceso usando el factory
+      const process = createSaveProcess(formData, tipo, projectId);
+      // 2) Ejecutamos el template method save()
+      const result = await process.save();
+      // 4) Cerramos y reseteamos
+      if (onSave) onSave(result);
+      handleCancel();
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   const handleCancel = () => {
@@ -120,7 +132,7 @@ export default function ModalAddTI({ tipo = "tarea", onClose, projectId }) {
               >
                 <option value="">Selecciona un responsable</option>
                 {users.map((r) => (
-                  <option key={r.value} value={r.value}>{r.label}</option>
+                  <option key={r.value} value={r.label}>{r.label}</option>
                 ))}
               </select>
             </div>

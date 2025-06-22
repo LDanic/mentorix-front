@@ -24,7 +24,8 @@ function Issues() {
                     nombre: p.name,
                     responsable: {
                         name: p.assigned_to,
-                        avatar: avatarFemale},
+                        avatar: avatarFemale
+                    },
                     estado: p.status,
                 }));
                 setIssues(tableData);
@@ -57,6 +58,20 @@ function Issues() {
         },
     ];
 
+    const handleSave = (newIssue) => {
+        const newFormattedIssue = {
+            nombre: newIssue.name,
+            responsable: {
+                name: newIssue.assigned_to,
+                avatar: avatarFemale
+            },
+            vencimiento: newIssue.deadline,
+            estado: newIssue.status,
+        };
+
+        setIssues((prevIssues) => [...(prevIssues || []), newFormattedIssue]);
+    };
+
     return (
         <div className="issues-container">
 
@@ -73,6 +88,9 @@ function Issues() {
                 <ModalAddTI
                     tipo="Issue"
                     onClose={() => setIsModalOpen(false)}
+                    onSave={(task) => {
+                        handleSave(task);
+                    }}
                     projectId={projectId}
                 />
             )}

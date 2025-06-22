@@ -6,7 +6,7 @@ import calendarIcon from "../assets/calendarIcon.png";
 import Table from "./Table";
 import ModalAddTI from "./ModalAddTI";
 import EstadoBadgeFactory from "../utils/EstadoBadgeFlyweight.jsx";
-import { getProjectTasks } from "../utils/projects";
+import {getProjectTasks} from "../utils/projects";
 import "../styles/Tareas.css";
 
 export default function Tareas() {
@@ -72,7 +72,17 @@ export default function Tareas() {
 
 
   const handleSave = (newTask) => {
-    console.log("Tarea creada:", newTask);
+    const newFormattedTask = {
+      nombre: newTask.name,
+      responsable: {
+        name: newTask.assigned_to,
+        avatar: avatarFemale
+      },
+      vencimiento: newTask.deadline,
+      estado: newTask.status,
+    };
+
+    setTask((prevTasks) => [...(prevTasks || []), newFormattedTask]);
   };
 
   return (
@@ -93,6 +103,9 @@ export default function Tareas() {
       {isModalOpen && (
         <ModalAddTI
           tipo="tarea"
+          onSave={(task) => {
+            handleSave(task);
+          }}
           onClose={() => setIsModalOpen(false)}
           projectId={projectId}
         />
