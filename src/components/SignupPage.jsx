@@ -11,7 +11,6 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [rol, setRol] = useState("");
   const [skill, setSkill] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
@@ -21,10 +20,6 @@ export default function SignupPage() {
 
     if (!firstName || !lastName || !email || !password || !confirmPassword || !skill || !description) {
       return setError("Todos los campos son obligatorios");
-    }
-
-    if (!rol) {
-      return setError("Debes seleccionar un rol");
     }
 
     if (password !== confirmPassword) {
@@ -41,7 +36,6 @@ export default function SignupPage() {
       nombre: `${firstName} ${lastName}`,
       email,
       password,
-      rol,
       skill,
       description,
     };
@@ -90,19 +84,6 @@ export default function SignupPage() {
             <div className="input-group">
               <label>Correo electrónico</label>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-input" placeholder="camila@mentorix.com" />
-            </div>
-
-            <div className="input-group">
-              <label>Rol profesional</label>
-              <select value={rol} onChange={(e) => setRol(e.target.value)} className={`form-input ${rol === "" ? "placeholder" : ""}`}>
-                <option value="" disabled>Selecciona un rol</option>
-                <option value="Project Manager">Project Manager</option>
-                <option value="Coordinador de Proyecto">Coordinador de Proyecto</option>
-                <option value="Analista de Negocio">Analista de Negocio</option>
-                <option value="Consultor Externo">Consultor Externo</option>
-                <option value="Líder de Área">Líder de Área</option>
-                <option value="Asistente Administrativo">Asistente Administrativo</option>
-              </select>
             </div>
 
             <div className="input-group">
