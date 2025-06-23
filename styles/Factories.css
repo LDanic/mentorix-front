@@ -1,0 +1,169 @@
+/* Título y subtítulo dentro del componente */
+.recovery-form-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 20px; /* reducido */
+}
+
+.recovery-form-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px; /* reducido */
+}
+
+/* Formularios comunes */
+.recovery-form {
+  display: flex;
+  flex-direction: column;
+  gap: 13px; /* reducido */
+  margin: 0; /* 👈 evita margen exterior */
+  padding: 0;
+}
+
+/* Grupo de inputs */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* reducido */
+}
+
+.input-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.input-group input {
+  height: 48px; /* un poco más compacto */
+  padding: 0 14px;
+  font-size: 15px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #000;
+  outline: none;
+}
+
+/* Botón común */
+.recovery-btn {
+  padding: 0.6rem 0.9rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 15px;
+    margin-bottom: -4px;
+}
+
+.recovery-btn:hover {
+  background-color: #1e40af;
+}
+
+/* Mensajes */
+.success-msg,
+.error-msg {
+  font-size: 14px;
+  text-align: center;
+  margin-top: -6px; /* 👈 más ajustado todavía */
+}
+
+.success-msg {
+  color: #16a34a;
+}
+
+.error-msg {
+  color: #dc2626;
+}
+
+/* Asegura espacio uniforme si los mensajes van después del subtítulo */
+.recovery-form-subtitle + .error-msg,
+.recovery-form-subtitle + .success-msg {
+  margin-top: 12px; /* consistente con email */
+}
+
+/* Asegura separación entre botón y mensaje cuando están dentro del form */
+.recovery-form .error-msg,
+.recovery-form .success-msg {
+  margin-top: 12px;  /* espacio uniforme debajo del botón */
+}
+
+/* Estilo para el select igual que los inputs */
+select.form-input {
+  height: 52px;
+  border-radius: 8px;
+  border: 2px solid #d1d5db;
+  padding: 0 16px;
+  font-family: "Inter", -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  outline: none;
+  background-color: #fff;
+  appearance: none;
+}
+
+.form-input.placeholder {
+  color: #9ca3af; /* gris placeholder */
+}
+
+/* Estilo para el select igual que los inputs */
+select.form-input {
+  height: 52px;
+  border-radius: 8px;
+  border: 2px solid #d1d5db;
+  padding: 0 16px;
+  font-family: "Inter", -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  outline: none;
+  background-color: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%236b7280' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px 8px;
+}
+
+.input-icon-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* Esto asegura que el label quede alineado al borde izquierdo */
+  gap: 4px;
+}
+
+.input-icon-wrapper input {
+  width: 100%;
+  padding-right: 16px;
+  height: 52px;
+  border-radius: 8px;
+  border: 2px solid #d1d5db;
+  padding: 0 16px;
+  font-family: "Inter", -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  background-color: #fff;
+  outline: none;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%; /* asegura que ocupe todo el ancho */
+}
+
+.password-input-wrapper input {
+  width: 100%;
+}
+
+.recovery-form .success-msg {
+  margin-top: 12px;
+}

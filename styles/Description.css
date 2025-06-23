@@ -1,0 +1,113 @@
+:root {
+  --bg-dark: #2c2c2c;
+  --text-light: #f9f9fa;
+  --text-medium: #89898a;
+  --accent: #bfb2ff;
+  --font-base: "Inter", Helvetica, sans-serif;
+  --font-size-lg: 20px;
+  --font-size-md: 16px;
+  --font-size-sm: 14px;
+}
+
+/* Contenedor principal */
+.description-container {
+  background: var(--bg-dark);
+  border-radius: 6px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  color: var(--text-light);
+}
+
+/* Título del proyecto */
+.description-container .project-info {
+  font-family: var(--font-base);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Párrafo descriptivo */
+.description-container .project-desc {
+  font-family: var(--font-base);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  color: var(--text-medium);
+  line-height: 1.5;
+}
+
+/* Grid de campos */
+.description-container .info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px 32px;
+  color: var(--text-light);
+}
+
+/* Cada campo: etiqueta + valor */
+.description-container .info-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.description-container .info-field .label {
+  font-size: var(--font-size-sm);
+  color: var(--text-medium);
+}
+
+.description-container .info-field .value {
+  font-size: var(--font-size-md);
+  font-weight: 500;
+}
+
+/* Bloque de Project Leader */
+.description-container .leader-field {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.description-container .leader-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #444; /* placeholder si no hay img */
+}
+
+.description-container .leader-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.description-container .leader-info .leader-name {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.description-container .leader-info .leader-role {
+  font-size: var(--font-size-sm);
+  color: var(--text-medium);
+}
+
+/* Proyecto tipo (texto largo) */
+.description-container .project-type {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.description-container .project-type .label {
+  font-size: var(--font-size-sm);
+  color: var(--text-medium);
+}
+
+.description-container .project-type .value {
+  font-size: var(--font-size-sm);
+  color: var(--text-light);
+}
