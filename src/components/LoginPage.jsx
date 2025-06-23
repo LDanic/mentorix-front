@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/LoginPage.css";
 import { useNavigate } from "react-router-dom";
-import UserSession from "../utils/UserSession";
+import UserSession from "../utils/UserSession.jsx";
 import RecoveryFactory from "../factories/RecoveryMethodFactory.jsx";
 
 export default function LoginPage() {
@@ -26,7 +26,7 @@ export default function LoginPage() {
 
     if (email === fakeUser.email && password === fakeUser.password) {
       UserSession.getInstance().setUsuario(fakeUser);
-      navigate("/dashboard");
+      navigate("/projects/1");
       return;
     }
 
@@ -37,7 +37,7 @@ export default function LoginPage() {
 
     if (usuario) {
       UserSession.getInstance().setUsuario(usuario);
-      navigate("/dashboard");
+      navigate("/projects/1");
     } else {
       setAuthError("Correo o contraseña incorrectos");
     }

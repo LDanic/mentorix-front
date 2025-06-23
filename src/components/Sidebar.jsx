@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import companyLogo from "../assets/CompaniLogo.png";
-import logoutIcon from "../assets/logout.png";
 import chevronIcon from "../assets/Chevron Left.png";
 import "../styles/Sidebar.css";
+import RoleButton from "./decorators/RoleButton";
+import UserSession from "../utils/UserSession";
 import { getProjects } from "../utils/projects";
+
+const projects = [
+  "Barkli Gallery",
+  "Greenish",
+  "Bigo Ecommerce",
+  "Youtube Research",
+  "Find Me Teacher",
+];
 
 export default function Sidebar({ onLogout, onNavigateAreas }) {
   const [projects, setProjects] = useState([]);
@@ -47,23 +56,13 @@ export default function Sidebar({ onLogout, onNavigateAreas }) {
         </button>
       </nav>
 
-      {/* Footer */}
+      {/* Footer: Área y Rol */}
       <div className="sidebar-footer">
-        <button
-          className="area-button"
-          onClick={onNavigateAreas}
-          aria-label="Áreas"
-        >
-          <img src={chevronIcon} alt="" className="icon-img" />
-          <span>Áreas</span>
-        </button>
-        <button
-          className="logout-button"
-          onClick={onLogout}
-          aria-label="Cerrar sesión"
-        >
-          <img src={logoutIcon} alt="" className="icon-img" />
-        </button>
+
+        {/* Botón decorador con rol */}
+        <div style={{ marginTop: "12px", display: "flex", justifyContent: "center" }}>
+          <RoleButton rol={UserSession.getInstance().getUsuario()?.rol} />
+        </div>
       </div>
     </aside>
   );

@@ -140,11 +140,12 @@
 .form-panel {
   flex: 1;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 49px 0;
   background-color: #fff;
+  overflow-y: auto;         /* Scroll si se desborda */
+  padding: 49px 0 32px 0;   /* Padding inferior extra */
 }
+
 
 @media (max-width: 991px) {
   .form-panel {
@@ -154,7 +155,11 @@
 
 .form-container {
   width: 448px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
+
 
 @media (max-width: 991px) {
   .form-container {
@@ -193,8 +198,19 @@
 .form-content {
   display: flex;
   flex-direction: column;
-  gap: 23px;
+  gap: 14px; /* era 16px */
 }
+
+
+.create-account-btn {
+  margin-top: 4px; /* era 8px */
+}
+
+.signin-link {
+  margin-top: 0px; /* era 4px */
+  text-align: center;
+}
+
 
 .name-fields {
   display: flex;
@@ -303,8 +319,10 @@
 
 .signin-link {
   text-align: center;
-  margin-top: 24px;
+  margin-top: 16px;
+  padding-bottom: 8px; /* Le da un espacio seguro sin empujarlo demasiado */
 }
+
 
 .signin-text {
   color: #6b7280;
@@ -375,4 +393,35 @@
   color: #374151;
   cursor: pointer;
   background-color: #fff;
+}
+
+/* Estilo uniforme para los selects */
+select.form-input {
+  height: 52px;
+  border-radius: 8px;
+  border: 2px solid #d1d5db;
+  padding: 0 16px;
+  font-family: "Inter", -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  outline: none;
+  background-color: #fff;
+
+  /* Quitar flecha nativa */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  /* Añadir flecha personalizada */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%236b7280' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px 8px;
+  cursor: pointer;
+}
+
+/* Placeholder para selects vacíos */
+.form-input.placeholder {
+  color: #9ca3af;
 }

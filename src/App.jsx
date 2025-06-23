@@ -1,30 +1,72 @@
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
-import Description from "./components/Description";
-import Participantes from "./components/Participantes";
-import Tareas from "./components/Tareas";
-import Issues from "./components/Issues";
-import SignupPage from "./components/SignupPage";
+import SignupPage from "./components/SignupPage.jsx";
+import LoginPage from "./components/LoginPage.jsx";
+import Header from "./components/Header.jsx";
+import Sidebar from "./components/Sidebar.jsx";
+import Participantes from "./components/Participantes.jsx";
+import Tareas from "./components/Tareas.jsx";
+import Issues from "./components/Issues.jsx";
+import Description from "./components/Description.jsx";
+import ModalAdd from "./components/ModalAdd.jsx";
+import ModalDetails from "./components/ModalDetails.jsx";
+import UserSession from "./utils/UserSession.jsx"; // 🔥 Singleton
 import "./App.css";
 
 function App() {
-  return (
+  const [usuario, setUsuario] = useState(UserSession.getInstance().getUsuario());
+
+  // Suscribirse a cambios forzando render cuando haya login/logout
+  useEffect(() => {
+    const syncUsuario = () => {
+      const nuevoUsuario = UserSession.getInstance().getUsuario();
+      setUsuario(nuevoUsuario);
+    };
+
+    window.addEventListener("storage", syncUsuario);
+
+    return () => {
+      window.removeEventListener("storage", syncUsuario);
+    };
+  }, []);
+
+
+    return (
     <BrowserRouter>
       <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage />} />
 
-        <Route path="/projects/:projectId/*" element={<Dashboard />}>
-          <Route index element={<Description />} />
-          <Route path="participantes" element={<Participantes />} />
-          <Route path="issues" element={<Issues />} />
-          <Route path="tareas" element={<Tareas />} />
-          <Route path="*" element={<Navigate to="" replace />} />
-        </Route>
-
-        <Route path="*" element={<Navigate to="/signup" replace />} />
+        {/* Protected routes */}
+        {usuario ? (
+          <Route path="/projects/:projectId/*" element={
+            <div className="app-container">
+              <Sidebar />
+              <div className="main-area">
+                <Header setUsuario={setUsuario} />
+                <div className="content">
+                  <Routes>
+                    <Route index element={<Description />} />
+                    <Route path="participantes" element={<Participantes />} />
+                    <Route path="tareas" element={<Tareas />} />
+                    <Route path="issues" element={<Issues />} />
+                    <Route path="modal-add" element={<ModalAdd />} />
+                    <Route path="modal-details" element={<ModalDetails />} />
+                    <Route path="*" element={<Navigate to="" replace />} />
+                  </Routes>
+                </div>
+              </div>
+            </div>
+          } />
+        ) : (
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        )}
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
+
