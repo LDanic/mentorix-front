@@ -153,6 +153,7 @@ select.form-input {
   color: #000;
   background-color: #fff;
   outline: none;
+  box-sizing: border-box;
 }
 
 .password-input-wrapper {
@@ -162,6 +163,7 @@ select.form-input {
 
 .password-input-wrapper input {
   width: 100%;
+  box-sizing: border-box;
 }
 
 .recovery-form .success-msg {

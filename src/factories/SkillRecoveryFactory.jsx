@@ -1,6 +1,7 @@
 // src/factories/SkillRecoveryFactory.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/Factories.css";
+import { getUsers, updatePassword } from "../utils/users";
 
 export class SkillRecoveryFactory {
   createRecoveryComponent() {
@@ -17,6 +18,13 @@ function SkillRecoveryForm() {
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [usuario, setUsuario] = useState(null);
+  const [usuarios, setUsuarios] = useState(null);
+
+  useEffect(() => {
+    getUsers()
+      .then(setUsuarios)
+      .catch(() => setError("No se pudieron cargar los usuarios"));
+  }, []);
 
   const skillsList = [
     "JavaScript",
@@ -32,7 +40,6 @@ function SkillRecoveryForm() {
     setError("");
     setMensaje("");
 
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
     const encontrado = usuarios.find((u) => u.email === email.trim());
 
     if (encontrado) {
@@ -52,49 +59,53 @@ function SkillRecoveryForm() {
       return;
     }
 
-    if (selectedSkill === usuario.skill) {
+    console.log("Usuario:", usuario.skills_names[0]);
+    if (selectedSkill === usuario.skills_names[0]
+    ) {
       setStep("reset");
     } else {
       setError("La skill no coincide");
     }
   };
 
-const handleResetPassword = () => {
-  setError("");
-  setMensaje("");
+  const handleResetPassword = () => {
+    setError("");
+    setMensaje("");
 
-  if (!newPassword || !confirmPassword) {
-    setError("Por favor ingresa ambas contraseñas");
-    return;
-  }
+    if (!newPassword || !confirmPassword) {
+      setError("Por favor ingresa ambas contraseñas");
+      return;
+    }
 
-  if (newPassword !== confirmPassword) {
-    setError("Las contraseñas no coinciden");
-    return;
-  }
+    if (newPassword !== confirmPassword) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
 
-  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-  const index = usuarios.findIndex((u) => u.email === usuario.email);
+    const id = usuarios.find((u) => u.email === usuario.email)?.ID;
 
-  if (index !== -1) {
-    usuarios[index].password = newPassword;
-    localStorage.setItem("usuarios", JSON.stringify(usuarios));
-    setMensaje("Contraseña actualizada con éxito. Ya puedes iniciar sesión.");
+    if (id) {
+      updatePassword(id, newPassword)
+        .then((response) => {
+          // Si la respuesta es exitosa, mostramos el mensaje
+          setMensaje("Contraseña actualizada correctamente");
 
-    // ❗ Dejamos ver el mensaje por 2 segundos y luego reseteamos
-    setTimeout(() => {
-      setStep("email");
-      setEmail("");
-      setSelectedSkill("");
-      setNewPassword("");
-      setConfirmPassword("");
-      setUsuario(null);
-      setMensaje(""); 
-    }, 2000);
-  } else {
-    setError("Error al actualizar la contraseña");
-  }
-};
+          // Limpiamos los valores después de un tiempo
+          setTimeout(() => {
+            setUsuarioValido(null);
+            setNewPassword("");
+            setConfirmPassword("");
+            setEmail("");
+            setMensaje("");
+          }, 2000);
+        })
+        .catch((error) => {
+          // En caso de error, mostramos el mensaje de error
+          console.log("Error al actualizar la contraseña:", error);
+          setMensaje("Error al actualizar la contraseña, intente nuevamente.");
+        });
+    }
+  };
 
 
   return (
@@ -104,20 +115,20 @@ const handleResetPassword = () => {
           <h2 className="recovery-form-title">Recuperación por Skill</h2>
           <p className="recovery-form-subtitle">Ingresa tu correo para validar identidad</p>
           <form className="recovery-form" onSubmit={(e) => { e.preventDefault(); handleEmailSubmit(); }}>
-          <div className="input-group">
-            <label htmlFor="email">Correo electrónico</label>
-            <div className="input-icon-wrapper">
-              <input
-                type="email"
-                id="email"
-                placeholder="Ingresa tu correo"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="form-input"
-              />
+            <div className="input-group">
+              <label htmlFor="email">Correo electrónico</label>
+              <div className="input-icon-wrapper">
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Ingresa tu correo"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="form-input"
+                />
+              </div>
             </div>
-          </div>
-          {error && <p className="error-msg">{error}</p>}
+            {error && <p className="error-msg">{error}</p>}
 
             <button type="submit" className="recovery-btn">Verificar correo</button>
           </form>
@@ -157,46 +168,46 @@ const handleResetPassword = () => {
         </>
       )}
 
-{step === "reset" && (
-  <>
-    <h2 className="recovery-form-title">Recuperación por Skill</h2>
-    <p className="recovery-form-subtitle">Ingresa y confirma tu nueva contraseña</p>
-    <form className="recovery-form" onSubmit={(e) => { e.preventDefault(); handleResetPassword(); }}>
-      <div className="input-group">
-        <label htmlFor="newPass">Nueva contraseña</label>
-        <div className="password-input-wrapper">
-          <input
-            type="password"
-            id="newPass"
-            placeholder="Nueva contraseña"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            className="form-input password-input"
-          />
-        </div>
-      </div>
-      <div className="input-group">
-        <label htmlFor="confirmPass">Confirmar nueva contraseña</label>
-        <div className="password-input-wrapper">
-          <input
-            type="password"
-            id="confirmPass"
-            placeholder="Confirmar contraseña"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="form-input password-input"
-          />
-        </div>
-      </div>
+      {step === "reset" && (
+        <>
+          <h2 className="recovery-form-title">Recuperación por Skill</h2>
+          <p className="recovery-form-subtitle">Ingresa y confirma tu nueva contraseña</p>
+          <form className="recovery-form" onSubmit={(e) => { e.preventDefault(); handleResetPassword(); }}>
+            <div className="input-group">
+              <label htmlFor="newPass">Nueva contraseña</label>
+              <div className="password-input-wrapper">
+                <input
+                  type="password"
+                  id="newPass"
+                  placeholder="Nueva contraseña"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="form-input password-input"
+                />
+              </div>
+            </div>
+            <div className="input-group">
+              <label htmlFor="confirmPass">Confirmar nueva contraseña</label>
+              <div className="password-input-wrapper">
+                <input
+                  type="password"
+                  id="confirmPass"
+                  placeholder="Confirmar contraseña"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="form-input password-input"
+                />
+              </div>
+            </div>
 
-      {/* 👇 Mensajes colocados ANTES del botón */}
-      {error && <p className="error-msg">{error}</p>}
-      {mensaje && <p className="success-msg">{mensaje}</p>}
+            {/* 👇 Mensajes colocados ANTES del botón */}
+            {error && <p className="error-msg">{error}</p>}
+            {mensaje && <p className="success-msg">{mensaje}</p>}
 
-      <button type="submit" className="recovery-btn">Actualizar contraseña</button>
-    </form>
-  </>
-)}
+            <button type="submit" className="recovery-btn">Actualizar contraseña</button>
+          </form>
+        </>
+      )}
 
     </div>
   );

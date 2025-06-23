@@ -34,8 +34,8 @@ export default function ModalDetails({ onClose, person }) {
           <div className="skills-section">
             <span className="skills-label">💪 Habilidades</span>
             <div className="skills-list">
-              {userData.skills && userData.skills.length > 0 ? (
-                userData.skills.map((skill) => (
+              {userData.skills_names && userData.skills_names.length > 0 ? (
+                userData.skills_names.map((skill) => (
                   <span key={skill} className="skill-badge">
                     {skill}
                   </span>

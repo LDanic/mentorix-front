@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/LoginPage.css";
 import { useNavigate } from "react-router-dom";
 import UserSession from "../utils/UserSession.jsx";
 import RecoveryFactory from "../factories/RecoveryMethodFactory.jsx";
+import { getUsers } from "../utils/users";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -11,6 +12,13 @@ export default function LoginPage() {
   const [authError, setAuthError] = useState("");
   const [showRecovery, setShowRecovery] = useState(false);
   const [recoveryType, setRecoveryType] = useState("email");
+  const [usuarios, setUsuarios] = useState(null);
+
+  useEffect(() => {
+      getUsers()
+        .then(setUsuarios)
+        .catch(() => setError("No se pudieron cargar los usuarios"));
+    }, []);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -30,7 +38,8 @@ export default function LoginPage() {
       return;
     }
 
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    console.log("Usuarios registrados:", usuarios);
+    
     const usuario = usuarios.find(
       (u) => u.email === email && u.password === password
     );

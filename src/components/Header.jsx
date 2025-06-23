@@ -76,10 +76,9 @@ function Header({ setUsuario }) {
                 {usuario?.nombre?.[0]?.toUpperCase() || "U"}
               </div>
               <div className="user-info-text">
-                <strong>{usuario?.nombre || "Usuario"}</strong>
-                <small>{usuario?.rol || "Project Manager"}</small>
+                <strong>{usuario?.name || "Usuario"}</strong>
                 <small className="email-text">{usuario?.email}</small>
-                <small className="skill-text">{usuario?.skill || "Sin skill registrada"}</small>
+                <small className="skill-text">{usuario?.skills_names || "Sin skill registrada"}</small>
               </div>
 
             </div>

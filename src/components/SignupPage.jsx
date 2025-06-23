@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../styles/SignupPage.css";
 import { useNavigate } from "react-router-dom";
 import UserSession from "../utils/UserSession";
+import { createUser } from "../utils/users";
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -40,11 +41,20 @@ export default function SignupPage() {
       description,
     };
 
-    usuariosRegistrados.push(nuevoUsuario);
-    localStorage.setItem("usuarios", JSON.stringify(usuariosRegistrados));
-    UserSession.getInstance().setUsuario(nuevoUsuario);
-    localStorage.setItem("usuario", JSON.stringify(nuevoUsuario));
-    navigate("/projects/1");
+    createUser(nuevoUsuario.nombre, nuevoUsuario.description, nuevoUsuario.email, nuevoUsuario.password, nuevoUsuario.skill)
+      .then(() => {
+        console.log("Usuario creado exitosamente");
+      })
+      .catch((error) => {
+        console.error("Error al crear el usuario:", error); 
+      });
+
+    //usuariosRegistrados.push(nuevoUsuario);
+    //localStorage.setItem("usuarios", JSON.stringify(usuariosRegistrados));
+    //UserSession.getInstance().setUsuario(nuevoUsuario);
+    //localStorage.setItem("usuario", JSON.stringify(nuevoUsuario));
+    //navigate("/projects/1");
+    navigate("/login");
   };
 
   return (
@@ -90,13 +100,13 @@ export default function SignupPage() {
               <label>Habilidad principal</label>
               <select value={skill} onChange={(e) => setSkill(e.target.value)} className={`form-input ${skill === "" ? "placeholder" : ""}`}>
                 <option value="" disabled>Selecciona tu habilidad</option>
-                <option value="JavaScript">JavaScript</option>
-                <option value="HTML/CSS">HTML/CSS</option>
-                <option value="Project Management">Project Management</option>
-                <option value="UI/UX Design">UI/UX Design</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Agile Leadership">Agile Leadership</option>
-                <option value="Talent Management">Talent Management</option>
+                <option value="1">JavaScript</option>
+                <option value="2">HTML/CSS</option>
+                <option value="3">Project Management</option>
+                <option value="4">UI/UX Design</option>
+                <option value="5">Marketing</option>
+                <option value="6">Agile Leadership</option>
+                <option value="7">Talent Management</option>
               </select>
             </div>
 

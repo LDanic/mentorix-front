@@ -32,3 +32,5 @@ export async function getProjectTasks(id) {
   const filtered = data.filter(issue => issue.project_id === Number(id));
   return filtered;
 }
+
+

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import companyLogo from "../assets/CompaniLogo.png";
 import chevronIcon from "../assets/Chevron Left.png";
 import "../styles/Sidebar.css";
-import RoleButton from "./decorators/RoleButton";
+import SkillButton from "./decorators/SkillButton";
 import UserSession from "../utils/UserSession";
 import { getProjects } from "../utils/projects";
 
@@ -39,29 +39,22 @@ export default function Sidebar({ onLogout, onNavigateAreas }) {
           {projects.map((proj) => (
             <button
               key={proj.id}
-              className={`project-button ${
-                String(proj.id) === projectId ? "active" : ""
-              }`}
+              className={`project-button ${String(proj.id) === projectId ? "active" : ""
+                }`}
               onClick={() => navigate(`/projects/${proj.id}`)}
             >
               {proj.name}
             </button>
           ))}
         </div>
-        <button
-          className="create-button"
-          onClick={() => navigate("/projects/new")}
-        >
-          + Create New Project
-        </button>
       </nav>
 
-      {/* Footer: Área y Rol */}
+      {/* Footer: Skill */}
       <div className="sidebar-footer">
 
-        {/* Botón decorador con rol */}
+        {/* Botón decorador con skill */}
         <div style={{ marginTop: "12px", display: "flex", justifyContent: "center" }}>
-          <RoleButton rol={UserSession.getInstance().getUsuario()?.rol} />
+          <SkillButton skill={UserSession.getInstance().getUsuario()?.skills_names} />
         </div>
       </div>
     </aside>
